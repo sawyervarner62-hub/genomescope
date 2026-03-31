@@ -17,7 +17,7 @@ export function PortfolioFooter() {
             <Github className="size-5" />
           </a>
           <a
-            href="mailto:contact@example.com"
+            href="mailto:sawyervarner62@gmail.com"
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
             <Mail className="size-5" />

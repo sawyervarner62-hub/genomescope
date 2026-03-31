@@ -19,8 +19,14 @@ export function ProjectCard({
   featured = false,
   gradient = false,
 }: ProjectCardProps) {
+  const isExternal = href.startsWith("http");
+  const Wrapper = isExternal ? "a" : Link;
+  const wrapperProps = isExternal
+    ? { href, target: "_blank" as const, rel: "noopener noreferrer" }
+    : { href };
+
   return (
-    <Link href={href} className={`block break-inside-avoid mb-4 ${featured ? "sm:col-span-2" : ""}`}>
+    <Wrapper {...wrapperProps} className={`block break-inside-avoid mb-4 ${featured ? "sm:col-span-2" : ""}`}>
       <Card className="group hover:border-primary/50 transition-colors h-full">
         {/* Thumbnail placeholder */}
         <div
@@ -60,6 +66,6 @@ export function ProjectCard({
           </p>
         </CardContent>
       </Card>
-    </Link>
+    </Wrapper>
   );
 }

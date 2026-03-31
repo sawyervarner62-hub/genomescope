@@ -18,7 +18,7 @@ const projects = [
     description:
       "AI-powered lead capture and response system for trade contractors. Monitors job boards, qualifies leads with Claude AI, and responds in under 60 seconds.",
     tags: ["Next.js", "Supabase", "Claude API", "Twilio"],
-    href: "#",
+    href: "https://vertosai.com",
     featured: false,
     gradient: false,
   },
@@ -27,7 +27,7 @@ const projects = [
     description:
       "Fantasy sports platform for FIRST Robotics Competition. Draft teams, track scores in real-time, and compete with friends during FRC season.",
     tags: ["Next.js", "Supabase", "Framer Motion"],
-    href: "#",
+    href: "https://github.com/sawyervarner62-hub",
     featured: false,
     gradient: false,
   },
@@ -36,7 +36,7 @@ const projects = [
     description:
       "Real-time market data visualization and analysis dashboard with sublinear algorithms for pattern detection.",
     tags: ["TypeScript", "D3.js", "WebSocket"],
-    href: "#",
+    href: "https://github.com/sawyervarner62-hub",
     featured: false,
     gradient: false,
   },
