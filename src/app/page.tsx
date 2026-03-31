@@ -1,174 +1,82 @@
-"use client";
+import { PortfolioHero } from "@/components/portfolio/hero-section";
+import { ProjectCard } from "@/components/portfolio/project-card";
+import { PortfolioFooter } from "@/components/portfolio/footer";
+import { Separator } from "@/components/ui/separator";
 
-import { useGenomeAnalysis } from "@/hooks/use-genome-analysis";
-import { ParseProgress } from "@/components/upload/parse-progress";
-import { HeroSection } from "@/components/landing/hero-section";
-import { ExecutiveSummary } from "@/components/results/executive-summary";
-import { CategoryCard } from "@/components/results/category-card";
-import { PathwayView } from "@/components/results/pathway-view";
-import { FindingDetail } from "@/components/results/finding-detail";
-import { MagnitudeDistribution } from "@/components/charts/magnitude-distribution";
-import { CategoryOverview } from "@/components/charts/category-overview";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  generateMarkdownReport,
-  generateJSONExport,
-  downloadFile,
-} from "@/lib/report-generator";
+const projects = [
+  {
+    title: "GenomeScope",
+    description:
+      "Privacy-first genome analysis tool. Upload 23andMe raw data and explore interactive genetic insights — all processing happens in your browser with Web Workers.",
+    tags: ["Next.js", "TypeScript", "Web Workers", "Recharts"],
+    href: "/projects/genomescope",
+    featured: true,
+    gradient: true,
+  },
+  {
+    title: "Vertos AI",
+    description:
+      "AI-powered lead capture and response system for trade contractors. Monitors job boards, qualifies leads with Claude AI, and responds in under 60 seconds.",
+    tags: ["Next.js", "Supabase", "Claude API", "Twilio"],
+    href: "#",
+    featured: false,
+    gradient: false,
+  },
+  {
+    title: "FRC Fantasy",
+    description:
+      "Fantasy sports platform for FIRST Robotics Competition. Draft teams, track scores in real-time, and compete with friends during FRC season.",
+    tags: ["Next.js", "Supabase", "Framer Motion"],
+    href: "#",
+    featured: false,
+    gradient: false,
+  },
+  {
+    title: "Trading Analytics",
+    description:
+      "Real-time market data visualization and analysis dashboard with sublinear algorithms for pattern detection.",
+    tags: ["TypeScript", "D3.js", "WebSocket"],
+    href: "#",
+    featured: false,
+    gradient: false,
+  },
+];
 
-export default function Home() {
-  const { phase, progress, results, error, analyze, reset } =
-    useGenomeAnalysis();
-
+export default function PortfolioPage() {
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
-        {phase === "idle" && <HeroSection onFileSelect={analyze} />}
+    <div className="container mx-auto px-4 max-w-5xl">
+      <PortfolioHero />
 
-        {(phase === "parsing" || phase === "analyzing") && (
-          <ParseProgress progress={progress} phase={phase} />
-        )}
+      {/* Projects */}
+      <section id="projects" className="space-y-6 pb-16">
+        <h2 className="text-2xl font-bold tracking-tight">Projects</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {projects.map((project) => (
+            <ProjectCard key={project.title} {...project} />
+          ))}
+        </div>
+      </section>
 
-        {phase === "error" && (
-          <div className="w-full max-w-lg mx-auto space-y-4">
-            <Alert variant="destructive">
-              <AlertTitle>Analysis Error</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-            <div className="flex justify-center">
-              <Button onClick={reset} variant="outline">
-                Try Again
-              </Button>
-            </div>
-          </div>
-        )}
+      {/* About */}
+      <section id="about" className="pb-16">
+        <Separator className="mb-8" />
+        <div className="max-w-2xl space-y-4">
+          <h2 className="text-2xl font-bold tracking-tight">About</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            I&apos;m a high school student passionate about building software
+            that sits at the intersection of technology and business. From
+            AI-powered automation platforms to privacy-first health tools, I
+            focus on creating products that solve real problems for real people.
+          </p>
+          <p className="text-muted-foreground leading-relaxed">
+            My work spans full-stack development, AI integration, and
+            data-driven decision making. I believe the best technical solutions
+            come from deeply understanding the business problem first.
+          </p>
+        </div>
+      </section>
 
-        {phase === "complete" && results && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold tracking-tight">
-                  GenomeScope
-                </h1>
-                <p className="text-muted-foreground">
-                  Analysis complete &mdash; {results.summary.analyzedSNPs}{" "}
-                  SNPs matched
-                </p>
-              </div>
-              <Button variant="outline" onClick={reset}>
-                New Analysis
-              </Button>
-            </div>
-
-            <ExecutiveSummary results={results} />
-
-            <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="w-full justify-start">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="categories">Categories</TabsTrigger>
-                <TabsTrigger value="pathways">Pathways</TabsTrigger>
-                <TabsTrigger value="details">All Findings</TabsTrigger>
-                <TabsTrigger value="export">Export</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="overview" className="space-y-6 mt-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <MagnitudeDistribution results={results} />
-                  <CategoryOverview results={results} />
-                </div>
-                {results.summary.highImpact > 0 && (
-                  <div className="space-y-3">
-                    <h2 className="text-xl font-semibold">
-                      Priority Findings
-                    </h2>
-                    <div className="space-y-3">
-                      {results.findings
-                        .filter((f) => f.magnitude >= 3)
-                        .map((f) => (
-                          <FindingDetail key={f.rsid} finding={f} />
-                        ))}
-                    </div>
-                  </div>
-                )}
-              </TabsContent>
-
-              <TabsContent value="categories" className="space-y-4 mt-4">
-                {Object.entries(results.byCategory)
-                  .sort(
-                    ([, a], [, b]) =>
-                      Math.max(...b.map((f) => f.magnitude)) -
-                      Math.max(...a.map((f) => f.magnitude))
-                  )
-                  .map(([category, findings]) => (
-                    <CategoryCard
-                      key={category}
-                      category={category}
-                      findings={findings}
-                    />
-                  ))}
-              </TabsContent>
-
-              <TabsContent value="pathways" className="mt-4">
-                <PathwayView findings={results.findings} />
-              </TabsContent>
-
-              <TabsContent value="details" className="mt-4">
-                <ScrollArea className="h-[600px]">
-                  <div className="space-y-3 pr-4">
-                    {results.findings.map((f) => (
-                      <FindingDetail key={f.rsid} finding={f} />
-                    ))}
-                  </div>
-                </ScrollArea>
-              </TabsContent>
-
-              <TabsContent value="export" className="mt-4 space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <Button
-                    variant="outline"
-                    className="h-24 text-base"
-                    onClick={() => {
-                      const md = generateMarkdownReport(results);
-                      downloadFile(md, "genomescope-report.md", "text/markdown");
-                    }}
-                  >
-                    Download Markdown Report
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="h-24 text-base"
-                    onClick={() => {
-                      const json = generateJSONExport(results);
-                      downloadFile(
-                        json,
-                        "genomescope-results.json",
-                        "application/json"
-                      );
-                    }}
-                  >
-                    Download JSON Data
-                  </Button>
-                </div>
-              </TabsContent>
-            </Tabs>
-
-            <Alert className="mt-8">
-              <AlertTitle>Disclaimer</AlertTitle>
-              <AlertDescription className="text-xs leading-relaxed">
-                This report is for informational and educational purposes only.
-                It is NOT medical advice. Genetic associations are
-                probabilistic, not deterministic. Consult healthcare providers
-                before making medical decisions. Your genes are one factor among
-                many &mdash; environment, lifestyle, and other genes also
-                matter.
-              </AlertDescription>
-            </Alert>
-          </div>
-        )}
-      </div>
-    </main>
+      <PortfolioFooter />
+    </div>
   );
 }

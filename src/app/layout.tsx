@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Navbar } from "@/components/portfolio/navbar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sawyer Varner — GenomeScope",
+  title: "Sawyer Varner — Developer & Innovator",
   description:
-    "A privacy-first genome analysis tool by Sawyer Varner. Upload your 23andMe raw data and explore interactive genetic insights — all processing happens in your browser.",
+    "Student developer building at the intersection of technology and business. Projects include AI automation, privacy-first genome analysis, and more.",
 };
 
 export default function RootLayout({
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Navbar />
         {children}
       </body>
     </html>
