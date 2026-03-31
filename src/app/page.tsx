@@ -1,8 +1,8 @@
 "use client";
 
 import { useGenomeAnalysis } from "@/hooks/use-genome-analysis";
-import { FileDropzone } from "@/components/upload/file-dropzone";
 import { ParseProgress } from "@/components/upload/parse-progress";
+import { HeroSection } from "@/components/landing/hero-section";
 import { ExecutiveSummary } from "@/components/results/executive-summary";
 import { CategoryCard } from "@/components/results/category-card";
 import { PathwayView } from "@/components/results/pathway-view";
@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-5xl">
-        {phase === "idle" && <FileDropzone onFileSelect={analyze} />}
+        {phase === "idle" && <HeroSection onFileSelect={analyze} />}
 
         {(phase === "parsing" || phase === "analyzing") && (
           <ParseProgress progress={progress} phase={phase} />

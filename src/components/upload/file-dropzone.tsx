@@ -3,6 +3,7 @@
 import { useCallback, useState, DragEvent, ChangeEvent } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { FileUp, Lock, ShieldCheck, EyeOff } from "lucide-react";
 
 interface FileDropzoneProps {
   onFileSelect: (file: File) => void;
@@ -42,9 +43,9 @@ export function FileDropzone({ onFileSelect }: FileDropzoneProps) {
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">GenomeScope</h1>
-        <p className="text-muted-foreground text-lg">
-          Interactive Genome Analysis Dashboard
+        <h2 className="text-2xl font-bold tracking-tight">Upload Your Data</h2>
+        <p className="text-muted-foreground">
+          Drop your 23andMe raw data file to begin analysis
         </p>
       </div>
 
@@ -59,13 +60,22 @@ export function FileDropzone({ onFileSelect }: FileDropzoneProps) {
         onDrop={handleDrop}
       >
         <CardContent className="flex flex-col items-center justify-center py-16 gap-4">
-          <div className="text-6xl">🧬</div>
+          <div
+            className="size-16 rounded-2xl flex items-center justify-center"
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, var(--gradient-start), var(--gradient-end))",
+              opacity: 0.9,
+            }}
+          >
+            <FileUp className="size-8 text-white" />
+          </div>
           <div className="text-center space-y-1">
             <p className="text-lg font-medium">
-              Drop your 23andMe raw data file here
+              Drop your file here
             </p>
             <p className="text-sm text-muted-foreground">
-              or click to browse (.txt format)
+              .txt, .csv, or .tsv format
             </p>
           </div>
           <label>
@@ -82,15 +92,15 @@ export function FileDropzone({ onFileSelect }: FileDropzoneProps) {
         </CardContent>
       </Card>
 
-      <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-        <Badge variant="secondary" className="gap-1">
-          <span>🔒</span> 100% Client-Side
+      <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground flex-wrap">
+        <Badge variant="secondary" className="gap-1.5">
+          <Lock className="size-3" /> Client-Side Only
         </Badge>
-        <Badge variant="secondary" className="gap-1">
-          <span>🚫</span> No Upload
+        <Badge variant="secondary" className="gap-1.5">
+          <ShieldCheck className="size-3" /> No Server Upload
         </Badge>
-        <Badge variant="secondary" className="gap-1">
-          <span>🛡️</span> Your Data Stays Private
+        <Badge variant="secondary" className="gap-1.5">
+          <EyeOff className="size-3" /> Data Stays Private
         </Badge>
       </div>
 

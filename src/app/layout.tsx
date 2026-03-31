@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GenomeScope — Interactive Genome Analysis",
+  title: "Sawyer Varner — GenomeScope",
   description:
-    "Upload your 23andMe raw data and explore interactive, privacy-first genetic analysis. All processing happens in your browser — your data never leaves your device.",
+    "A privacy-first genome analysis tool by Sawyer Varner. Upload your 23andMe raw data and explore interactive genetic insights — all processing happens in your browser.",
 };
 
 export default function RootLayout({
