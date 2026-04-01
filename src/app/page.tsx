@@ -57,16 +57,16 @@ export default function PortfolioPage() {
       {/* Gradient orbs background */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div
-          className="absolute -top-40 -left-40 size-[500px] rounded-full opacity-[0.07] blur-[120px]"
-          style={{ background: "oklch(0.55 0.25 285)" }}
+          className="absolute -top-32 -left-32 size-[600px] rounded-full opacity-[0.15] blur-[150px]"
+          style={{ background: "oklch(0.45 0.2 285)" }}
         />
         <div
-          className="absolute top-1/3 -right-32 size-[400px] rounded-full opacity-[0.06] blur-[100px]"
-          style={{ background: "oklch(0.6 0.2 240)" }}
+          className="absolute top-[40%] -right-24 size-[500px] rounded-full opacity-[0.12] blur-[130px]"
+          style={{ background: "oklch(0.5 0.18 240)" }}
         />
         <div
-          className="absolute bottom-20 left-1/4 size-[350px] rounded-full opacity-[0.05] blur-[100px]"
-          style={{ background: "oklch(0.5 0.22 300)" }}
+          className="absolute bottom-0 left-[20%] size-[450px] rounded-full opacity-[0.1] blur-[120px]"
+          style={{ background: "oklch(0.4 0.2 300)" }}
         />
       </div>
 
