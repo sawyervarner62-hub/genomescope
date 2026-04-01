@@ -1,19 +1,23 @@
 "use client";
 
+import { useCallback, useRef } from "react";
 import { useGenomeAnalysis } from "@/hooks/use-genome-analysis";
+import { useGenomeCounter } from "@/hooks/use-genome-counter";
+import { hashGenomeFile } from "@/lib/genome-hash";
 import { FileDropzone } from "@/components/upload/file-dropzone";
 import { ParseProgress } from "@/components/upload/parse-progress";
-import { ExecutiveSummary } from "@/components/results/executive-summary";
+import { DashboardHeadline } from "@/components/results/dashboard-headline";
 import { CategoryCard } from "@/components/results/category-card";
 import { PathwayView } from "@/components/results/pathway-view";
 import { FindingDetail } from "@/components/results/finding-detail";
 import { MagnitudeDistribution } from "@/components/charts/magnitude-distribution";
 import { CategoryOverview } from "@/components/charts/category-overview";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Users } from "lucide-react";
 import Link from "next/link";
 import {
   generateMarkdownReport,
@@ -24,18 +28,44 @@ import {
 export default function GenomeScopePage() {
   const { phase, progress, results, error, analyze, reset } =
     useGenomeAnalysis();
+  const { count, recordGenome } = useGenomeCounter();
+  const hasRecordedRef = useRef(false);
+
+  const handleFileSelect = useCallback(
+    async (file: File) => {
+      // Hash the file for unique counting before analysis starts
+      hasRecordedRef.current = false;
+      try {
+        const hash = await hashGenomeFile(file);
+        await recordGenome(hash);
+        hasRecordedRef.current = true;
+      } catch {
+        // Counter failure shouldn't block analysis
+      }
+      analyze(file);
+    },
+    [analyze, recordGenome]
+  );
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
-      <Link
-        href="/"
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
-      >
-        <ArrowLeft className="size-4" />
-        Back to Portfolio
-      </Link>
+      <div className="flex items-center justify-between mb-8">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="size-4" />
+          Back to Portfolio
+        </Link>
+        {count !== null && count > 0 && (
+          <Badge variant="secondary" className="gap-1.5">
+            <Users className="size-3" />
+            {count} genome{count !== 1 ? "s" : ""} analyzed
+          </Badge>
+        )}
+      </div>
 
-      {phase === "idle" && <FileDropzone onFileSelect={analyze} />}
+      {phase === "idle" && <FileDropzone onFileSelect={handleFileSelect} />}
 
       {(phase === "parsing" || phase === "analyzing") && (
         <ParseProgress progress={progress} phase={phase} />
@@ -72,8 +102,10 @@ export default function GenomeScopePage() {
             </Button>
           </div>
 
-          <ExecutiveSummary results={results} />
+          {/* Headline dashboard */}
+          <DashboardHeadline results={results} />
 
+          {/* Detailed tabs */}
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="w-full justify-start">
               <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -88,18 +120,6 @@ export default function GenomeScopePage() {
                 <MagnitudeDistribution results={results} />
                 <CategoryOverview results={results} />
               </div>
-              {results.summary.highImpact > 0 && (
-                <div className="space-y-3">
-                  <h2 className="text-xl font-semibold">Priority Findings</h2>
-                  <div className="space-y-3">
-                    {results.findings
-                      .filter((f) => f.magnitude >= 3)
-                      .map((f) => (
-                        <FindingDetail key={f.rsid} finding={f} />
-                      ))}
-                  </div>
-                </div>
-              )}
             </TabsContent>
 
             <TabsContent value="categories" className="space-y-4 mt-4">
