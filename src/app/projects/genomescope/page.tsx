@@ -3,7 +3,7 @@
 import { useCallback, useRef } from "react";
 import { useGenomeAnalysis } from "@/hooks/use-genome-analysis";
 import { useGenomeCounter } from "@/hooks/use-genome-counter";
-import { hashGenomeFile } from "@/lib/genome-hash";
+import { hashGenomeFile, validateGenomeFile } from "@/lib/genome-hash";
 import { FileDropzone } from "@/components/upload/file-dropzone";
 import { ParseProgress } from "@/components/upload/parse-progress";
 import { DashboardHeadline } from "@/components/results/dashboard-headline";
@@ -33,12 +33,15 @@ export default function GenomeScopePage() {
 
   const handleFileSelect = useCallback(
     async (file: File) => {
-      // Hash the file for unique counting before analysis starts
+      // Validate this is a real genome file before counting
       hasRecordedRef.current = false;
       try {
-        const hash = await hashGenomeFile(file);
-        await recordGenome(hash);
-        hasRecordedRef.current = true;
+        const isGenome = await validateGenomeFile(file);
+        if (isGenome) {
+          const hash = await hashGenomeFile(file);
+          await recordGenome(hash);
+          hasRecordedRef.current = true;
+        }
       } catch {
         // Counter failure shouldn't block analysis
       }
