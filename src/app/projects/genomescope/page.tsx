@@ -35,7 +35,6 @@ export default function GenomeScopePage() {
 
   const handleFileSelect = useCallback(
     async (file: File) => {
-      // Validate this is a real genome file before counting
       hasRecordedRef.current = false;
       try {
         const isGenome = await validateGenomeFile(file);
@@ -54,38 +53,48 @@ export default function GenomeScopePage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
-      <div className="flex items-center justify-between mb-8">
+      {/* Header with back link + counter */}
+      <div className="flex items-center justify-between mb-8 animate-fade-up">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground/70 hover:text-foreground transition-colors duration-200"
         >
           <ArrowLeft className="size-4" />
           Back to Portfolio
         </Link>
         {count !== null && count > 0 && (
-          <Badge variant="secondary" className="gap-1.5">
+          <Badge variant="secondary" className="gap-1.5 bg-white/[0.04] border-border/30">
             <Users className="size-3" />
             {count} genome{count !== 1 ? "s" : ""} analyzed
           </Badge>
         )}
       </div>
 
+      {/* Idle — architecture + upload */}
       {phase === "idle" && (
         <>
-        <ArchitectureDiagram />
-        <FileDropzone
-          onFileSelect={handleFileSelect}
-          onDemoClick={() => analyzePrebuilt(SAMPLE_GENOME)}
-        />
+          <div className="animate-fade-up-delay-1">
+            <ArchitectureDiagram />
+          </div>
+          <div className="animate-fade-up-delay-3">
+            <FileDropzone
+              onFileSelect={handleFileSelect}
+              onDemoClick={() => analyzePrebuilt(SAMPLE_GENOME)}
+            />
+          </div>
         </>
       )}
 
+      {/* Parsing / Analyzing */}
       {(phase === "parsing" || phase === "analyzing") && (
-        <ParseProgress progress={progress} phase={phase} />
+        <div className="animate-fade-up">
+          <ParseProgress progress={progress} phase={phase} />
+        </div>
       )}
 
+      {/* Error */}
       {phase === "error" && (
-        <div className="w-full max-w-lg mx-auto space-y-4">
+        <div className="w-full max-w-lg mx-auto space-y-4 animate-fade-up">
           <Alert variant="destructive">
             <AlertTitle>Analysis Error</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
@@ -98,112 +107,133 @@ export default function GenomeScopePage() {
         </div>
       )}
 
+      {/* Complete — Results dashboard */}
       {phase === "complete" && results && (
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          {/* Title bar */}
+          <div className="flex items-center justify-between animate-fade-up">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">
-                GenomeScope
+              <h1 className="text-3xl font-bold tracking-tighter">
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(135deg, oklch(0.75 0.2 280), oklch(0.65 0.22 250))",
+                  }}
+                >
+                  GenomeScope
+                </span>
               </h1>
-              <p className="text-muted-foreground">
-                Analysis complete &mdash; {results.summary.analyzedSNPs}{" "}
-                SNPs matched
+              <p className="text-muted-foreground/70 text-sm">
+                Analysis complete &mdash; {results.summary.analyzedSNPs} SNPs
+                matched
               </p>
             </div>
-            <Button variant="outline" onClick={reset}>
+            <Button
+              variant="outline"
+              onClick={reset}
+              className="border-border/40 hover:border-primary/30"
+            >
               New Analysis
             </Button>
           </div>
 
           {/* Headline dashboard */}
-          <DashboardHeadline results={results} />
+          <div className="animate-fade-up-delay-1">
+            <DashboardHeadline results={results} />
+          </div>
 
-          {/* Detailed tabs */}
-          <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="w-full justify-start">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="categories">Categories</TabsTrigger>
-              <TabsTrigger value="pathways">Pathways</TabsTrigger>
-              <TabsTrigger value="details">All Findings</TabsTrigger>
-              <TabsTrigger value="export">Export</TabsTrigger>
-            </TabsList>
+          {/* Tabs */}
+          <div className="animate-fade-up-delay-2">
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="w-full justify-start">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="categories">Categories</TabsTrigger>
+                <TabsTrigger value="pathways">Pathways</TabsTrigger>
+                <TabsTrigger value="details">All Findings</TabsTrigger>
+                <TabsTrigger value="export">Export</TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="overview" className="space-y-6 mt-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <MagnitudeDistribution results={results} />
-                <CategoryOverview results={results} />
-              </div>
-            </TabsContent>
-
-            <TabsContent value="categories" className="space-y-4 mt-4">
-              {Object.entries(results.byCategory)
-                .sort(
-                  ([, a], [, b]) =>
-                    Math.max(...b.map((f) => f.magnitude)) -
-                    Math.max(...a.map((f) => f.magnitude))
-                )
-                .map(([category, findings]) => (
-                  <CategoryCard
-                    key={category}
-                    category={category}
-                    findings={findings}
-                  />
-                ))}
-            </TabsContent>
-
-            <TabsContent value="pathways" className="mt-4">
-              <PathwayView findings={results.findings} />
-            </TabsContent>
-
-            <TabsContent value="details" className="mt-4">
-              <ScrollArea className="h-[600px]">
-                <div className="space-y-3 pr-4">
-                  {results.findings.map((f) => (
-                    <FindingDetail key={f.rsid} finding={f} />
-                  ))}
+              <TabsContent value="overview" className="space-y-6 mt-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <MagnitudeDistribution results={results} />
+                  <CategoryOverview results={results} />
                 </div>
-              </ScrollArea>
-            </TabsContent>
+              </TabsContent>
 
-            <TabsContent value="export" className="mt-4 space-y-4">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Button
-                  variant="outline"
-                  className="h-24 text-base"
-                  onClick={() => {
-                    const md = generateMarkdownReport(results);
-                    downloadFile(md, "genomescope-report.md", "text/markdown");
-                  }}
-                >
-                  Download Markdown Report
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-24 text-base"
-                  onClick={() => {
-                    const json = generateJSONExport(results);
-                    downloadFile(
-                      json,
-                      "genomescope-results.json",
-                      "application/json"
-                    );
-                  }}
-                >
-                  Download JSON Data
-                </Button>
-              </div>
-            </TabsContent>
-          </Tabs>
+              <TabsContent value="categories" className="space-y-4 mt-4">
+                {Object.entries(results.byCategory)
+                  .sort(
+                    ([, a], [, b]) =>
+                      Math.max(...b.map((f) => f.magnitude)) -
+                      Math.max(...a.map((f) => f.magnitude))
+                  )
+                  .map(([category, findings]) => (
+                    <CategoryCard
+                      key={category}
+                      category={category}
+                      findings={findings}
+                    />
+                  ))}
+              </TabsContent>
 
-          <Alert className="mt-8">
-            <AlertTitle>Disclaimer</AlertTitle>
-            <AlertDescription className="text-xs leading-relaxed">
-              This report is for informational and educational purposes only. It
-              is NOT medical advice. Genetic associations are probabilistic, not
-              deterministic. Consult healthcare providers before making medical
-              decisions.
-            </AlertDescription>
-          </Alert>
+              <TabsContent value="pathways" className="mt-4">
+                <PathwayView findings={results.findings} />
+              </TabsContent>
+
+              <TabsContent value="details" className="mt-4">
+                <ScrollArea className="h-[600px]">
+                  <div className="space-y-3 pr-4">
+                    {results.findings.map((f) => (
+                      <FindingDetail key={f.rsid} finding={f} />
+                    ))}
+                  </div>
+                </ScrollArea>
+              </TabsContent>
+
+              <TabsContent value="export" className="mt-4 space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <Button
+                    variant="outline"
+                    className="h-24 text-base border-border/40 hover:border-primary/30 hover:shadow-[0_0_30px_-10px] hover:shadow-primary/15 transition-all duration-300"
+                    onClick={() => {
+                      const md = generateMarkdownReport(results);
+                      downloadFile(md, "genomescope-report.md", "text/markdown");
+                    }}
+                  >
+                    Download Markdown Report
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-24 text-base border-border/40 hover:border-primary/30 hover:shadow-[0_0_30px_-10px] hover:shadow-primary/15 transition-all duration-300"
+                    onClick={() => {
+                      const json = generateJSONExport(results);
+                      downloadFile(
+                        json,
+                        "genomescope-results.json",
+                        "application/json"
+                      );
+                    }}
+                  >
+                    Download JSON Data
+                  </Button>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+
+          {/* Disclaimer */}
+          <div className="animate-fade-up-delay-3">
+            <Alert className="border-border/30 bg-card/40 backdrop-blur-sm">
+              <AlertTitle>Disclaimer</AlertTitle>
+              <AlertDescription className="text-xs leading-relaxed text-muted-foreground/70">
+                This report is for informational and educational purposes only.
+                It is NOT medical advice. Genetic associations are probabilistic,
+                not deterministic. Consult healthcare providers before making
+                medical decisions.
+              </AlertDescription>
+            </Alert>
+          </div>
         </div>
       )}
     </div>

@@ -4,7 +4,6 @@ import { MetricsBanner } from "@/components/portfolio/metrics-banner";
 import { TechStack } from "@/components/portfolio/tech-stack";
 import { SkillsSection } from "@/components/portfolio/skills-section";
 import { PortfolioFooter } from "@/components/portfolio/footer";
-import { AnimatedBackground } from "@/components/portfolio/animated-background";
 import { Dna, Bot, Trophy, BarChart3 } from "lucide-react";
 
 const projects = [
@@ -57,10 +56,8 @@ const projects = [
 
 export default function PortfolioPage() {
   return (
-    <div className="relative min-h-screen noise-overlay">
-      <AnimatedBackground />
-
-      <div className="relative z-10 container mx-auto px-4 max-w-5xl">
+    <div className="min-h-screen">
+      <div className="container mx-auto px-4 max-w-5xl">
         <PortfolioHero />
 
         {/* Metrics */}
