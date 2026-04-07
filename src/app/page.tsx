@@ -2,7 +2,6 @@ import { PortfolioHero } from "@/components/portfolio/hero-section";
 import { ProjectCard } from "@/components/portfolio/project-card";
 import { MetricsBanner } from "@/components/portfolio/metrics-banner";
 import { TechStack } from "@/components/portfolio/tech-stack";
-import { ArchitectureDiagram } from "@/components/portfolio/architecture-diagram";
 import { SkillsSection } from "@/components/portfolio/skills-section";
 import { PortfolioFooter } from "@/components/portfolio/footer";
 import { Separator } from "@/components/ui/separator";
@@ -100,9 +99,6 @@ export default function PortfolioPage() {
             ))}
           </div>
         </section>
-
-        {/* Architecture */}
-        <ArchitectureDiagram />
 
         {/* About + Skills */}
         <SkillsSection />

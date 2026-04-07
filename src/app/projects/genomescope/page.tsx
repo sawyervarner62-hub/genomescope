@@ -25,6 +25,7 @@ import {
   downloadFile,
 } from "@/lib/report-generator";
 import { SAMPLE_GENOME } from "@/lib/sample-genome";
+import { ArchitectureDiagram } from "@/components/portfolio/architecture-diagram";
 
 export default function GenomeScopePage() {
   const { phase, progress, results, error, analyze, analyzePrebuilt, reset } =
@@ -70,10 +71,13 @@ export default function GenomeScopePage() {
       </div>
 
       {phase === "idle" && (
+        <>
+        <ArchitectureDiagram />
         <FileDropzone
           onFileSelect={handleFileSelect}
           onDemoClick={() => analyzePrebuilt(SAMPLE_GENOME)}
         />
+        </>
       )}
 
       {(phase === "parsing" || phase === "analyzing") && (
