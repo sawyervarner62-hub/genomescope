@@ -23,6 +23,12 @@ export function Navbar() {
           >
             About
           </a>
+          <Link
+            href="/blog"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium h-8 px-3 hover:bg-accent hover:text-accent-foreground transition-colors"
+          >
+            Blog
+          </Link>
           <a
             href="#contact"
             className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium h-8 px-3 hover:bg-accent hover:text-accent-foreground transition-colors"

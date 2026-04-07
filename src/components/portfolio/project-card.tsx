@@ -9,6 +9,7 @@ interface ProjectCardProps {
   tags: string[];
   href: string;
   featured?: boolean;
+  isLive?: boolean;
   icon: LucideIcon;
   gradientFrom: string;
   gradientTo: string;
@@ -20,6 +21,7 @@ export function ProjectCard({
   tags,
   href,
   featured = false,
+  isLive = false,
   icon: Icon,
   gradientFrom,
   gradientTo,
@@ -51,6 +53,12 @@ export function ProjectCard({
             }`}
             strokeWidth={1.5}
           />
+          {isLive && (
+            <Badge className="absolute top-3 left-3 bg-green-500/20 text-green-300 border-green-400/30 backdrop-blur-sm text-xs gap-1">
+              <span className="size-1.5 rounded-full bg-green-400 animate-pulse" />
+              Live
+            </Badge>
+          )}
           {featured && (
             <Badge className="absolute top-3 right-3 bg-white/20 text-white border-white/30 backdrop-blur-sm text-xs">
               Featured

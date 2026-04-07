@@ -58,5 +58,21 @@ export function useGenomeAnalysis() {
     setError(null);
   }, []);
 
-  return { phase, progress, results, error, analyze, reset };
+  const analyzePrebuilt = useCallback((genome: GenomeRecord) => {
+    setPhase("analyzing");
+    setError(null);
+    setResults(null);
+    requestAnimationFrame(() => {
+      try {
+        const analysisResults = analyzeGenome(genome);
+        setResults(analysisResults);
+        setPhase("complete");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Analysis failed");
+        setPhase("error");
+      }
+    });
+  }, []);
+
+  return { phase, progress, results, error, analyze, analyzePrebuilt, reset };
 }

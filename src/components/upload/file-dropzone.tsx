@@ -3,13 +3,15 @@
 import { useCallback, useState, DragEvent, ChangeEvent } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { FileUp, Lock, ShieldCheck, EyeOff } from "lucide-react";
+import { FileUp, Lock, ShieldCheck, EyeOff, Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface FileDropzoneProps {
   onFileSelect: (file: File) => void;
+  onDemoClick?: () => void;
 }
 
-export function FileDropzone({ onFileSelect }: FileDropzoneProps) {
+export function FileDropzone({ onFileSelect, onDemoClick }: FileDropzoneProps) {
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragOver = useCallback((e: DragEvent) => {
@@ -89,6 +91,22 @@ export function FileDropzone({ onFileSelect }: FileDropzoneProps) {
               Choose File
             </span>
           </label>
+          {onDemoClick && (
+            <div className="flex flex-col items-center gap-1 pt-2">
+              <p className="text-xs text-muted-foreground">
+                No genome file? Try with sample data
+              </p>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-1.5"
+                onClick={onDemoClick}
+              >
+                <Play className="size-3.5" />
+                Try Demo
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
 

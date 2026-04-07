@@ -1,5 +1,9 @@
 import { PortfolioHero } from "@/components/portfolio/hero-section";
 import { ProjectCard } from "@/components/portfolio/project-card";
+import { MetricsBanner } from "@/components/portfolio/metrics-banner";
+import { TechStack } from "@/components/portfolio/tech-stack";
+import { ArchitectureDiagram } from "@/components/portfolio/architecture-diagram";
+import { SkillsSection } from "@/components/portfolio/skills-section";
 import { PortfolioFooter } from "@/components/portfolio/footer";
 import { Separator } from "@/components/ui/separator";
 import { Dna, Bot, Trophy, BarChart3 } from "lucide-react";
@@ -12,6 +16,7 @@ const projects = [
     tags: ["Next.js", "TypeScript", "Web Workers", "Recharts"],
     href: "/projects/genomescope",
     featured: true,
+    isLive: true,
     icon: Dna,
     gradientFrom: "oklch(0.55 0.25 285)",
     gradientTo: "oklch(0.6 0.2 240)",
@@ -73,6 +78,14 @@ export default function PortfolioPage() {
       <div className="relative container mx-auto px-4 max-w-5xl">
         <PortfolioHero />
 
+        {/* Metrics */}
+        <MetricsBanner />
+
+        {/* Tech Stack */}
+        <TechStack />
+
+        <Separator className="my-8" />
+
         {/* Projects */}
         <section id="projects" className="space-y-8 pb-20">
           <div className="space-y-1">
@@ -88,24 +101,11 @@ export default function PortfolioPage() {
           </div>
         </section>
 
-        {/* About */}
-        <section id="about" className="pb-20">
-          <Separator className="mb-10" />
-          <div className="max-w-2xl space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight">About</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              I&apos;m a high school student passionate about building software
-              that sits at the intersection of technology and business. From
-              AI-powered automation platforms to privacy-first health tools, I
-              focus on creating products that solve real problems for real people.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              My work spans full-stack development, AI integration, and
-              data-driven decision making. I believe the best technical solutions
-              come from deeply understanding the business problem first.
-            </p>
-          </div>
-        </section>
+        {/* Architecture */}
+        <ArchitectureDiagram />
+
+        {/* About + Skills */}
+        <SkillsSection />
 
         <PortfolioFooter />
       </div>

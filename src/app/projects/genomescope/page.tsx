@@ -24,9 +24,10 @@ import {
   generateJSONExport,
   downloadFile,
 } from "@/lib/report-generator";
+import { SAMPLE_GENOME } from "@/lib/sample-genome";
 
 export default function GenomeScopePage() {
-  const { phase, progress, results, error, analyze, reset } =
+  const { phase, progress, results, error, analyze, analyzePrebuilt, reset } =
     useGenomeAnalysis();
   const { count, recordGenome } = useGenomeCounter();
   const hasRecordedRef = useRef(false);
@@ -68,7 +69,12 @@ export default function GenomeScopePage() {
         )}
       </div>
 
-      {phase === "idle" && <FileDropzone onFileSelect={handleFileSelect} />}
+      {phase === "idle" && (
+        <FileDropzone
+          onFileSelect={handleFileSelect}
+          onDemoClick={() => analyzePrebuilt(SAMPLE_GENOME)}
+        />
+      )}
 
       {(phase === "parsing" || phase === "analyzing") && (
         <ParseProgress progress={progress} phase={phase} />
