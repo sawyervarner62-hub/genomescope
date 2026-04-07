@@ -4,7 +4,7 @@ import { MetricsBanner } from "@/components/portfolio/metrics-banner";
 import { TechStack } from "@/components/portfolio/tech-stack";
 import { SkillsSection } from "@/components/portfolio/skills-section";
 import { PortfolioFooter } from "@/components/portfolio/footer";
-import { Separator } from "@/components/ui/separator";
+import { AnimatedBackground } from "@/components/portfolio/animated-background";
 import { Dna, Bot, Trophy, BarChart3 } from "lucide-react";
 
 const projects = [
@@ -57,36 +57,29 @@ const projects = [
 
 export default function PortfolioPage() {
   return (
-    <div className="relative min-h-screen">
-      {/* Gradient orbs background */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div
-          className="absolute -top-32 -left-32 size-[600px] rounded-full opacity-[0.15] blur-[150px]"
-          style={{ background: "oklch(0.45 0.2 285)" }}
-        />
-        <div
-          className="absolute top-[40%] -right-24 size-[500px] rounded-full opacity-[0.12] blur-[130px]"
-          style={{ background: "oklch(0.5 0.18 240)" }}
-        />
-        <div
-          className="absolute bottom-0 left-[20%] size-[450px] rounded-full opacity-[0.1] blur-[120px]"
-          style={{ background: "oklch(0.4 0.2 300)" }}
-        />
-      </div>
+    <div className="relative min-h-screen noise-overlay">
+      <AnimatedBackground />
 
-      <div className="relative container mx-auto px-4 max-w-5xl">
+      <div className="relative z-10 container mx-auto px-4 max-w-5xl">
         <PortfolioHero />
 
         {/* Metrics */}
-        <MetricsBanner />
+        <div className="animate-fade-up-delay-3">
+          <MetricsBanner />
+        </div>
 
         {/* Tech Stack */}
-        <TechStack />
+        <div className="animate-fade-up-delay-4">
+          <TechStack />
+        </div>
 
-        <Separator className="my-8" />
+        {/* Divider — glowing line */}
+        <div className="my-12 h-px relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        </div>
 
         {/* Projects */}
-        <section id="projects" className="space-y-8 pb-20">
+        <section id="projects" className="space-y-8 pb-20 animate-fade-up-delay-5">
           <div className="space-y-1">
             <h2 className="text-2xl font-bold tracking-tight">Projects</h2>
             <p className="text-sm text-muted-foreground">
@@ -99,6 +92,11 @@ export default function PortfolioPage() {
             ))}
           </div>
         </section>
+
+        {/* Divider */}
+        <div className="my-4 h-px relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        </div>
 
         {/* About + Skills */}
         <SkillsSection />
