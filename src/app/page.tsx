@@ -35,7 +35,7 @@ const projects = [
     description:
       "Fantasy sports platform for FIRST Robotics Competition. Draft teams, track scores in real-time, and compete with friends during FRC season.",
     tags: ["Next.js", "Supabase", "Framer Motion"],
-    href: "https://frc-fantasy-two.vercel.app",
+    href: "/projects/frc-fantasy",
     featured: false,
     icon: Trophy,
     gradientFrom: "oklch(0.55 0.22 300)",
