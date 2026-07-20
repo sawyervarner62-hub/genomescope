@@ -46,7 +46,7 @@ export function HeroSection({ onFileSelect }: HeroSectionProps) {
           Sawyer Varner
         </span>
         <a
-          href="https://github.com/sawyervarner62-hub/genomescope"
+          href="https://github.com/sawyervarner62-hub/traitmap"
           target="_blank"
           rel="noopener noreferrer"
         >

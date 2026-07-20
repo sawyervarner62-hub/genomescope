@@ -1,6 +1,5 @@
 import { Separator } from "@/components/ui/separator";
 import { Github, Mail, Linkedin } from "lucide-react";
-import { GenomeCountBadge } from "./genome-count-badge";
 
 export function PortfolioFooter() {
   return (
@@ -32,7 +31,6 @@ export function PortfolioFooter() {
             <Linkedin className="size-5" />
           </a>
         </div>
-        <GenomeCountBadge />
         <p className="text-sm text-muted-foreground">
           Sawyer Varner &middot; {new Date().getFullYear()}
         </p>

@@ -4,15 +4,15 @@ import { MetricsBanner } from "@/components/portfolio/metrics-banner";
 import { TechStack } from "@/components/portfolio/tech-stack";
 import { SkillsSection } from "@/components/portfolio/skills-section";
 import { PortfolioFooter } from "@/components/portfolio/footer";
-import { Dna, Bot, Trophy, BarChart3 } from "lucide-react";
+import { Dna, Bot, Trophy } from "lucide-react";
 
 const projects = [
   {
-    title: "GenomeScope",
+    title: "Traitmap",
     description:
       "Privacy-first genome analysis tool. Upload 23andMe raw data and explore interactive genetic insights — all processing happens in your browser with Web Workers.",
     tags: ["Next.js", "TypeScript", "Web Workers", "Recharts"],
-    href: "/projects/genomescope",
+    href: "/projects/traitmap",
     featured: true,
     isLive: true,
     icon: Dna,
@@ -40,17 +40,6 @@ const projects = [
     icon: Trophy,
     gradientFrom: "oklch(0.55 0.22 300)",
     gradientTo: "oklch(0.5 0.2 270)",
-  },
-  {
-    title: "Trading Analytics",
-    description:
-      "Real-time market data visualization and analysis dashboard with sublinear algorithms for pattern detection.",
-    tags: ["TypeScript", "D3.js", "WebSocket"],
-    href: "https://github.com/sawyervarner62-hub",
-    featured: false,
-    icon: BarChart3,
-    gradientFrom: "oklch(0.5 0.18 230)",
-    gradientTo: "oklch(0.55 0.15 260)",
   },
 ];
 

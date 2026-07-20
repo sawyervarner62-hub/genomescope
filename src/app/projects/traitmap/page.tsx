@@ -1,9 +1,7 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import { useGenomeAnalysis } from "@/hooks/use-genome-analysis";
-import { useGenomeCounter } from "@/hooks/use-genome-counter";
-import { hashGenomeFile, validateGenomeFile } from "@/lib/genome-hash";
 import { FileDropzone } from "@/components/upload/file-dropzone";
 import { ParseProgress } from "@/components/upload/parse-progress";
 import { DashboardHeadline } from "@/components/results/dashboard-headline";
@@ -13,11 +11,10 @@ import { FindingDetail } from "@/components/results/finding-detail";
 import { MagnitudeDistribution } from "@/components/charts/magnitude-distribution";
 import { CategoryOverview } from "@/components/charts/category-overview";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, Users } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import {
   generateMarkdownReport,
@@ -27,33 +24,20 @@ import {
 import { SAMPLE_GENOME } from "@/lib/sample-genome";
 import { ArchitectureDiagram } from "@/components/portfolio/architecture-diagram";
 
-export default function GenomeScopePage() {
+export default function TraitmapPage() {
   const { phase, progress, results, error, analyze, analyzePrebuilt, reset } =
     useGenomeAnalysis();
-  const { count, recordGenome } = useGenomeCounter();
-  const hasRecordedRef = useRef(false);
 
   const handleFileSelect = useCallback(
-    async (file: File) => {
-      hasRecordedRef.current = false;
-      try {
-        const isGenome = await validateGenomeFile(file);
-        if (isGenome) {
-          const hash = await hashGenomeFile(file);
-          await recordGenome(hash);
-          hasRecordedRef.current = true;
-        }
-      } catch {
-        // Counter failure shouldn't block analysis
-      }
+    (file: File) => {
       analyze(file);
     },
-    [analyze, recordGenome]
+    [analyze]
   );
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
-      {/* Header with back link + counter */}
+      {/* Header with back link */}
       <div className="flex items-center justify-between mb-8 animate-fade-up">
         <Link
           href="/"
@@ -62,12 +46,6 @@ export default function GenomeScopePage() {
           <ArrowLeft className="size-4" />
           Back to Portfolio
         </Link>
-        {count !== null && count > 0 && (
-          <Badge variant="secondary" className="gap-1.5 bg-white/[0.04] border-border/30">
-            <Users className="size-3" />
-            {count} genome{count !== 1 ? "s" : ""} analyzed
-          </Badge>
-        )}
       </div>
 
       {/* Idle — architecture + upload */}
@@ -121,7 +99,7 @@ export default function GenomeScopePage() {
                       "linear-gradient(135deg, oklch(0.75 0.2 280), oklch(0.65 0.22 250))",
                   }}
                 >
-                  GenomeScope
+                  Traitmap
                 </span>
               </h1>
               <p className="text-muted-foreground/70 text-sm">
@@ -198,7 +176,7 @@ export default function GenomeScopePage() {
                     className="h-24 text-base border-border/40 hover:border-primary/30 hover:shadow-[0_0_30px_-10px] hover:shadow-primary/15 transition-all duration-300"
                     onClick={() => {
                       const md = generateMarkdownReport(results);
-                      downloadFile(md, "genomescope-report.md", "text/markdown");
+                      downloadFile(md, "traitmap-report.md", "text/markdown");
                     }}
                   >
                     Download Markdown Report
@@ -210,7 +188,7 @@ export default function GenomeScopePage() {
                       const json = generateJSONExport(results);
                       downloadFile(
                         json,
-                        "genomescope-results.json",
+                        "traitmap-results.json",
                         "application/json"
                       );
                     }}

@@ -45,11 +45,42 @@ export function FileDropzone({ onFileSelect, onDemoClick }: FileDropzoneProps) {
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold tracking-tight">Upload Your Data</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Try it now</h2>
         <p className="text-muted-foreground">
-          Drop your 23andMe raw data file to begin analysis
+          Explore a sample genome instantly &mdash; no file or account needed.
         </p>
       </div>
+
+      {onDemoClick && (
+        <div className="flex flex-col items-center gap-2">
+          <Button
+            size="lg"
+            className="text-base px-8 gap-2"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, var(--gradient-start), var(--gradient-end))",
+              color: "white",
+            }}
+            onClick={onDemoClick}
+          >
+            <Play className="size-4" />
+            Run the Live Demo
+          </Button>
+          <p className="text-xs text-muted-foreground">
+            Uses a realistic sample genome
+          </p>
+        </div>
+      )}
+
+      {onDemoClick && (
+        <div className="flex items-center gap-3 max-w-xs mx-auto">
+          <div className="h-px flex-1 bg-border/40" />
+          <span className="text-xs text-muted-foreground whitespace-nowrap">
+            or analyze your own
+          </span>
+          <div className="h-px flex-1 bg-border/40" />
+        </div>
+      )}
 
       <Card
         className={`border-2 border-dashed transition-colors cursor-pointer ${
@@ -61,23 +92,23 @@ export function FileDropzone({ onFileSelect, onDemoClick }: FileDropzoneProps) {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <CardContent className="flex flex-col items-center justify-center py-16 gap-4">
+        <CardContent className="flex flex-col items-center justify-center py-12 gap-4">
           <div
-            className="size-16 rounded-2xl flex items-center justify-center"
+            className="size-14 rounded-2xl flex items-center justify-center"
             style={{
               backgroundImage:
                 "linear-gradient(135deg, var(--gradient-start), var(--gradient-end))",
               opacity: 0.9,
             }}
           >
-            <FileUp className="size-8 text-white" />
+            <FileUp className="size-7 text-white" />
           </div>
           <div className="text-center space-y-1">
-            <p className="text-lg font-medium">
-              Drop your file here
+            <p className="text-base font-medium">
+              Drop your 23andMe file here
             </p>
             <p className="text-sm text-muted-foreground">
-              .txt, .csv, or .tsv format
+              .txt, .csv, or .tsv &mdash; optional
             </p>
           </div>
           <label>
@@ -91,22 +122,6 @@ export function FileDropzone({ onFileSelect, onDemoClick }: FileDropzoneProps) {
               Choose File
             </span>
           </label>
-          {onDemoClick && (
-            <div className="flex flex-col items-center gap-1 pt-2">
-              <p className="text-xs text-muted-foreground">
-                No genome file? Try with sample data
-              </p>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-1.5"
-                onClick={onDemoClick}
-              >
-                <Play className="size-3.5" />
-                Try Demo
-              </Button>
-            </div>
-          )}
         </CardContent>
       </Card>
 

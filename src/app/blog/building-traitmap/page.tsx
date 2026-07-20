@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 
-export default function BuildingGenomeScopePage() {
+export default function BuildingTraitmapPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <Link
@@ -75,7 +75,7 @@ export default function BuildingGenomeScopePage() {
               The Architecture
             </h2>
             <p className="text-muted-foreground/80">
-              GenomeScope is built on a simple but powerful idea: your genome
+              Traitmap is built on a simple but powerful idea: your genome
               data never leaves your device. Here&apos;s how it works:
             </p>
             <ol className="list-decimal list-inside space-y-3 pl-2 text-muted-foreground/80">
@@ -178,10 +178,10 @@ export default function BuildingGenomeScopePage() {
 
         <div className="text-center py-4">
           <Link
-            href="/projects/genomescope"
+            href="/projects/traitmap"
             className="text-sm font-medium hover:text-primary/90 transition-colors duration-200 group"
           >
-            Try GenomeScope{" "}
+            Try Traitmap{" "}
             <span className="inline-block group-hover:translate-x-1 transition-transform duration-200">
               →
             </span>

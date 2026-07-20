@@ -30,7 +30,7 @@ export function ArchitectureDiagram() {
       <div className="space-y-1">
         <h2 className="text-2xl font-bold tracking-tight">How It Works</h2>
         <p className="text-sm text-muted-foreground">
-          The GenomeScope data pipeline
+          The Traitmap data pipeline
         </p>
       </div>
 

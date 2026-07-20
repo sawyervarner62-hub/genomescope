@@ -24,7 +24,7 @@ export function generateMarkdownReport(results: AnalysisResults): string {
   const lines: string[] = [];
 
   // Header
-  lines.push("# GenomeScope Genetic Health Report");
+  lines.push("# Traitmap Genetic Health Report");
   lines.push("");
   lines.push(`**Generated:** ${new Date().toISOString().slice(0, 16).replace("T", " ")}`);
   lines.push("");

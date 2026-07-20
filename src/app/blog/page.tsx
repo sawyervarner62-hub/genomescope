@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 
 const posts = [
   {
-    slug: "building-genomescope",
+    slug: "building-traitmap",
     title: "How I Built a Privacy-First Genome Analyzer",
     date: "April 2026",
     description:
