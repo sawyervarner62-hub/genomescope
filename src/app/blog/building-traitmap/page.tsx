@@ -1,94 +1,109 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
+import { TagList } from "@/components/ui/tag-list";
+import { JsonLd, blogPostingSchema } from "@/components/seo/json-ld";
+import { SITE_URL, getOgImageUrl } from "@/lib/seo";
+
+const tags = ["Next.js", "Web Workers", "Privacy", "Bioinformatics"];
+
+const POST = {
+  title: "How I Built a Privacy-First Genome Analyzer",
+  description:
+    "The architecture decisions, technical challenges, and lessons learned from building a client-side genetic analysis tool.",
+  slug: "building-traitmap",
+  datePublished: "2026-04-15",
+};
+
+export const metadata: Metadata = {
+  title: POST.title,
+  description: POST.description,
+  alternates: { canonical: `/blog/${POST.slug}` },
+  openGraph: {
+    type: "article",
+    title: POST.title,
+    description: POST.description,
+    url: `${SITE_URL}/blog/${POST.slug}`,
+    publishedTime: POST.datePublished,
+    authors: ["Sawyer Varner"],
+    tags,
+    images: [getOgImageUrl(POST.title, POST.description)],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: POST.title,
+    description: POST.description,
+    images: [getOgImageUrl(POST.title, POST.description)],
+  },
+};
 
 export default function BuildingTraitmapPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <JsonLd data={blogPostingSchema(POST)} />
       <Link
         href="/blog"
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground/70 hover:text-foreground transition-colors duration-200 mb-10 animate-fade-up"
+        className="link-accent inline-flex items-center gap-2 mono-spec text-steel hover:text-viridian transition-colors duration-200 mb-12 hero-fade-in"
       >
         <ArrowLeft className="size-4" />
         Back to Blog
       </Link>
 
-      <article className="space-y-8">
+      <article className="space-y-10">
         {/* Header */}
-        <div className="space-y-4 animate-fade-up-delay-1">
-          <p className="text-xs text-muted-foreground/60 tracking-widest uppercase">
-            April 2026
+        <div className="space-y-4 hero-fade-in hero-delay-1">
+          <p className="eyebrow">
+            <time dateTime={POST.datePublished}>April 2026</time> / Essay
           </p>
-          <h1
-            className="text-3xl sm:text-5xl font-bold tracking-tighter leading-tight bg-clip-text text-transparent"
-            style={{
-              backgroundImage:
-                "linear-gradient(135deg, oklch(0.85 0.12 270), oklch(0.7 0.18 250))",
-            }}
-          >
+          <h1 className="text-display-sm text-ink leading-tight">
             How I Built a Privacy-First Genome Analyzer
           </h1>
-          <div className="flex flex-wrap gap-1.5">
-            {["Next.js", "Web Workers", "Privacy", "Bioinformatics"].map(
-              (tag) => (
-                <Badge
-                  key={tag}
-                  variant="outline"
-                  className="text-xs font-normal border-border/40 bg-white/[0.02]"
-                >
-                  {tag}
-                </Badge>
-              )
-            )}
-          </div>
+          <TagList tags={tags} />
         </div>
 
-        {/* Glowing divider */}
-        <div className="h-px relative animate-fade-up-delay-2">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
-        </div>
+        <hr className="rule-accent hero-fade-in hero-delay-2" />
 
         {/* Article content */}
-        <div className="space-y-8 leading-relaxed animate-fade-up-delay-3">
+        <div className="space-y-10 hero-fade-in hero-delay-3">
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold text-foreground/90">
+            <h2 className="font-display text-xl font-semibold text-ink">
               The Problem
             </h2>
-            <p className="text-muted-foreground/80">
+            <p className="text-ink-soft leading-relaxed">
               When I started exploring genetic data analysis, I noticed
               something troubling: most tools that analyze your 23andMe or
               AncestryDNA raw data require you to upload your most personal
-              information — your DNA — to a third-party server. Some of these
+              information, your DNA, to a third-party server. Some of these
               services store your data indefinitely, and you have no real
               guarantee of how it&apos;s used.
             </p>
-            <p className="text-muted-foreground/80">
+            <p className="text-ink-soft leading-relaxed">
               I asked myself: does genome analysis actually need a server? The
-              answer turned out to be no. Every step — parsing the file, matching
-              SNPs, looking up clinical context — can happen entirely in your
+              answer turned out to be no. Every step, parsing the file, matching
+              SNPs, looking up clinical context, can happen entirely in your
               browser.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold text-foreground/90">
+            <h2 className="font-display text-xl font-semibold text-ink">
               The Architecture
             </h2>
-            <p className="text-muted-foreground/80">
-              Traitmap is built on a simple but powerful idea: your genome
-              data never leaves your device. Here&apos;s how it works:
+            <p className="text-ink-soft leading-relaxed">
+              Traitmap is built on a simple but powerful idea: your genome data
+              never leaves your device. Here&apos;s how it works:
             </p>
-            <ol className="list-decimal list-inside space-y-3 pl-2 text-muted-foreground/80">
+            <ol className="list-decimal list-inside space-y-3 pl-2 text-ink-soft leading-relaxed">
               <li>
                 You drop your raw data file (a{" "}
-                <code className="font-mono bg-white/[0.06] px-1.5 py-0.5 rounded text-sm text-primary/80">
+                <code className="font-mono bg-paper-deep px-1.5 py-0.5 text-sm text-viridian">
                   .txt
                 </code>{" "}
                 file from 23andMe) into the browser
               </li>
               <li>
                 A{" "}
-                <code className="font-mono bg-white/[0.06] px-1.5 py-0.5 rounded text-sm text-primary/80">
+                <code className="font-mono bg-paper-deep px-1.5 py-0.5 text-sm text-viridian">
                   Web Worker
                 </code>{" "}
                 parses 600,000+ lines in a background thread without freezing
@@ -103,7 +118,7 @@ export default function BuildingTraitmapPage() {
                 rankings, pathway analysis, and exportable reports
               </li>
             </ol>
-            <p className="text-muted-foreground/80">
+            <p className="text-ink-soft leading-relaxed">
               The entire application is a Next.js static site. There are no API
               calls during analysis, no database writes, no cookies. When you
               close the tab, your data is gone.
@@ -111,59 +126,59 @@ export default function BuildingTraitmapPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold text-foreground/90">
+            <h2 className="font-display text-xl font-semibold text-ink">
               Technical Challenges
             </h2>
-            <p className="text-muted-foreground/80">
-              <strong className="text-foreground/90">
+            <p className="text-ink-soft leading-relaxed">
+              <strong className="text-ink font-semibold">
                 Parsing 600K lines without freezing the UI.
               </strong>{" "}
               A typical 23andMe raw data file has 600,000+ lines. Parsing this
               on the main thread would lock the browser for several seconds. I
               used a{" "}
-              <code className="font-mono bg-white/[0.06] px-1.5 py-0.5 rounded text-sm text-primary/80">
+              <code className="font-mono bg-paper-deep px-1.5 py-0.5 text-sm text-viridian">
                 Web Worker
               </code>{" "}
               to offload parsing to a background thread, posting progress
               updates every 50,000 lines so the UI stays responsive with a live
               progress bar.
             </p>
-            <p className="text-muted-foreground/80">
-              <strong className="text-foreground/90">
+            <p className="text-ink-soft leading-relaxed">
+              <strong className="text-ink font-semibold">
                 Bidirectional genotype matching.
               </strong>{" "}
-              Genotypes can be reported in either direction — &quot;AG&quot; and
+              Genotypes can be reported in either direction. &quot;AG&quot; and
               &quot;GA&quot; are the same thing genetically, but different
               strings. The matcher tries both orientations against the database
               to avoid false negatives.
             </p>
-            <p className="text-muted-foreground/80">
-              <strong className="text-foreground/90">
+            <p className="text-ink-soft leading-relaxed">
+              <strong className="text-ink font-semibold">
                 Building a curated SNP database.
               </strong>{" "}
               I compiled 79 SNPs across 16 health categories from published
               research, each with clinical context: mechanism of action,
               implications, recommended actions, and gene interactions. This
-              isn&apos;t a raw data dump — it&apos;s an interpreted,
-              actionable database.
+              isn&apos;t a raw data dump, it&apos;s an interpreted, actionable
+              database.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold text-foreground/90">
+            <h2 className="font-display text-xl font-semibold text-ink">
               What I Learned
             </h2>
-            <p className="text-muted-foreground/80">
-              The biggest lesson wasn&apos;t technical — it was about framing.
+            <p className="text-ink-soft leading-relaxed">
+              The biggest lesson wasn&apos;t technical, it was about framing.
               Privacy isn&apos;t a limitation; it&apos;s the product. By
               constraining myself to client-side-only processing, I created
-              something that competing tools can&apos;t offer: absolute certainty
+              something competing tools can&apos;t offer: absolute certainty
               that your DNA data is never exposed.
             </p>
-            <p className="text-muted-foreground/80">
+            <p className="text-ink-soft leading-relaxed">
               This project also taught me that the best technical decisions are
               business decisions. Choosing Web Workers over a server-side
-              pipeline wasn&apos;t just an engineering choice — it eliminated
+              pipeline wasn&apos;t just an engineering choice, it eliminated
               hosting costs, HIPAA concerns, and the entire category of data
               breach risk. Sometimes the simplest architecture is the smartest
               one.
@@ -171,20 +186,15 @@ export default function BuildingTraitmapPage() {
           </section>
         </div>
 
-        {/* Glowing divider */}
-        <div className="h-px relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
-        </div>
+        <hr className="rule-accent" />
 
-        <div className="text-center py-4">
+        <div className="py-2">
           <Link
             href="/projects/traitmap"
-            className="text-sm font-medium hover:text-primary/90 transition-colors duration-200 group"
+            className="btn btn-accent"
           >
-            Try Traitmap{" "}
-            <span className="inline-block group-hover:translate-x-1 transition-transform duration-200">
-              →
-            </span>
+            Try Traitmap
+            <span aria-hidden>→</span>
           </Link>
         </div>
       </article>

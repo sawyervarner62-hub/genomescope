@@ -4,87 +4,82 @@ import { MetricsBanner } from "@/components/portfolio/metrics-banner";
 import { TechStack } from "@/components/portfolio/tech-stack";
 import { SkillsSection } from "@/components/portfolio/skills-section";
 import { PortfolioFooter } from "@/components/portfolio/footer";
+import { Reveal } from "@/components/reveal";
+import { JsonLd, personSchema, websiteSchema } from "@/components/seo/json-ld";
 import { Dna, Bot, Trophy } from "lucide-react";
 
 const projects = [
   {
     title: "Traitmap",
     description:
-      "Privacy-first genome analysis tool. Upload 23andMe raw data and explore interactive genetic insights — all processing happens in your browser with Web Workers.",
+      "Privacy-first genome analysis. Upload 23andMe raw data and explore interactive genetic insights. Every byte is processed in your browser with Web Workers, nothing is ever uploaded.",
     tags: ["Next.js", "TypeScript", "Web Workers", "Recharts"],
     href: "/projects/traitmap",
+    fig: "01",
     featured: true,
     isLive: true,
     icon: Dna,
-    gradientFrom: "oklch(0.55 0.25 285)",
-    gradientTo: "oklch(0.6 0.2 240)",
   },
   {
     title: "Vertos AI",
     description:
-      "AI-powered lead capture and response system for trade contractors. Monitors job boards, qualifies leads with Claude AI, and responds in under 60 seconds.",
+      "AI lead capture and response for trade contractors. Monitors job boards, qualifies leads with Claude, and replies in under 60 seconds.",
     tags: ["Next.js", "Supabase", "Claude API", "Twilio"],
     href: "https://vertosai.com",
-    featured: false,
+    fig: "02",
     icon: Bot,
-    gradientFrom: "oklch(0.5 0.2 250)",
-    gradientTo: "oklch(0.55 0.18 220)",
   },
   {
     title: "FRC Fantasy",
     description:
-      "Fantasy sports platform for FIRST Robotics Competition. Draft teams, track scores in real-time, and compete with friends during FRC season.",
-    tags: ["Next.js", "Supabase", "Framer Motion"],
+      "Fantasy sports for FIRST Robotics Competition. Draft teams, track scores live, and compete with friends through the season.",
+    tags: ["Next.js", "Supabase", "Realtime"],
     href: "/projects/frc-fantasy",
-    featured: false,
+    fig: "03",
     icon: Trophy,
-    gradientFrom: "oklch(0.55 0.22 300)",
-    gradientTo: "oklch(0.5 0.2 270)",
   },
 ];
 
 export default function PortfolioPage() {
   return (
     <div className="min-h-screen">
+      <JsonLd data={personSchema} />
+      <JsonLd data={websiteSchema} />
       <div className="container mx-auto px-4 max-w-5xl">
         <PortfolioHero />
 
-        {/* Metrics */}
-        <div className="animate-fade-up-delay-3">
+        <Reveal>
           <MetricsBanner />
-        </div>
+        </Reveal>
 
-        {/* Tech Stack */}
-        <div className="animate-fade-up-delay-4">
+        <Reveal>
           <TechStack />
-        </div>
-
-        {/* Divider — glowing line */}
-        <div className="my-12 h-px relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-        </div>
+        </Reveal>
 
         {/* Projects */}
-        <section id="projects" className="space-y-8 pb-20 animate-fade-up-delay-5">
-          <div className="space-y-1">
-            <h2 className="text-2xl font-bold tracking-tight">Projects</h2>
-            <p className="text-sm text-muted-foreground">
-              Things I&apos;ve built that I&apos;m proud of
-            </p>
-          </div>
+        <section id="projects" className="space-y-8 pt-14 pb-24">
+          <Reveal>
+            <div className="flex items-baseline gap-4">
+              <span className="spec-index">03</span>
+              <div>
+                <h2 className="text-display-sm text-ink">Selected Work</h2>
+                <p className="mono-spec mt-1">Things I&apos;ve built and shipped</p>
+              </div>
+            </div>
+          </Reveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {projects.map((project) => (
-              <ProjectCard key={project.title} {...project} />
+            {projects.map((project, i) => (
+              <Reveal
+                key={project.title}
+                delay={i * 60}
+                className={project.featured ? "sm:col-span-2" : undefined}
+              >
+                <ProjectCard {...project} />
+              </Reveal>
             ))}
           </div>
         </section>
 
-        {/* Divider */}
-        <div className="my-4 h-px relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        </div>
-
-        {/* About + Skills */}
         <SkillsSection />
 
         <PortfolioFooter />

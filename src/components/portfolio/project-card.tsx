@@ -1,18 +1,17 @@
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { type LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { TagList } from "@/components/ui/tag-list";
 
 interface ProjectCardProps {
   title: string;
   description: string;
   tags: string[];
   href: string;
+  fig: string;
   featured?: boolean;
   isLive?: boolean;
   icon: LucideIcon;
-  gradientFrom: string;
-  gradientTo: string;
 }
 
 export function ProjectCard({
@@ -20,11 +19,10 @@ export function ProjectCard({
   description,
   tags,
   href,
+  fig,
   featured = false,
   isLive = false,
   icon: Icon,
-  gradientFrom,
-  gradientTo,
 }: ProjectCardProps) {
   const isExternal = href.startsWith("http");
   const Wrapper = isExternal ? "a" : Link;
@@ -35,69 +33,52 @@ export function ProjectCard({
   return (
     <Wrapper
       {...wrapperProps}
-      className={`block ${featured ? "sm:col-span-2" : ""}`}
+      className={cn(
+        "group spec-tile flex flex-col transition-colors duration-200 hover:border-viridian",
+        featured && "sm:col-span-2 sm:flex-row sm:gap-8"
+      )}
     >
-      <Card className="group overflow-hidden border-border/30 bg-card/60 backdrop-blur-sm hover:border-primary/30 transition-all duration-500 hover:shadow-[0_0_40px_-12px] hover:shadow-primary/20 h-full">
-        {/* Icon + gradient thumbnail with inner glow */}
-        <div
-          className={`relative w-full flex items-center justify-center overflow-hidden ${
-            featured ? "h-48" : "h-36"
-          }`}
-          style={{
-            backgroundImage: `linear-gradient(135deg, ${gradientFrom}, ${gradientTo})`,
-          }}
-        >
-          {/* Animated shimmer on hover */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+      {/* Figure plate — line-art icon on ink, no gradient, no glow. */}
+      <div
+        className={cn(
+          "shrink-0 flex items-center justify-center border border-rule bg-ink text-viridian",
+          featured ? "sm:w-56 h-40 sm:h-auto mb-6 sm:mb-0" : "h-32 mb-6"
+        )}
+      >
+        <Icon
+          className={featured ? "size-14" : "size-11"}
+          strokeWidth={1.25}
+        />
+      </div>
 
-          <Icon
-            className={`text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-500 ${
-              featured ? "size-16" : "size-10"
-            }`}
-            strokeWidth={1.5}
-          />
+      <div className="flex flex-col flex-1">
+        <div className="flex items-center justify-between gap-3">
+          <span className="mono-spec">FIG. {fig}</span>
           {isLive && (
-            <Badge className="absolute top-3 left-3 bg-green-500/20 text-green-300 border-green-400/30 backdrop-blur-md text-xs gap-1.5">
-              <span className="size-1.5 rounded-full bg-green-400 animate-pulse" />
-              Live
-            </Badge>
-          )}
-          {featured && (
-            <Badge className="absolute top-3 right-3 bg-white/10 text-white/90 border-white/20 backdrop-blur-md text-xs">
-              Featured
-            </Badge>
+            <span className="mono-spec inline-flex items-center gap-1.5 text-viridian">
+              <span className="size-1.5 rounded-full bg-viridian animate-pulse" />
+              LIVE
+            </span>
           )}
         </div>
 
-        <CardHeader className="pb-2">
-          <CardTitle className={featured ? "text-xl" : "text-base"}>
-            {title}
-          </CardTitle>
-        </CardHeader>
+        <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight text-ink">
+          {title}
+        </h3>
 
-        <CardContent className="space-y-3">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {description}
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {tags.map((tag) => (
-              <Badge
-                key={tag}
-                variant="outline"
-                className="text-xs font-normal border-border/40 bg-background/30"
-              >
-                {tag}
-              </Badge>
-            ))}
-          </div>
-          <p className="text-sm font-medium group-hover:translate-x-1.5 transition-transform duration-300">
-            {featured ? "Try It Live" : "View Project"}{" "}
-            <span className="inline-block group-hover:translate-x-0.5 transition-transform duration-300">
-              →
-            </span>
-          </p>
-        </CardContent>
-      </Card>
+        <p className="mt-2 text-sm text-ink-soft leading-relaxed">
+          {description}
+        </p>
+
+        <TagList tags={tags} className="mt-4" />
+
+        <p className="mt-5 pt-4 border-t border-rule-paper text-sm font-medium text-ink inline-flex items-center gap-1.5">
+          {featured ? "Try it live" : isExternal ? "Visit site" : "View project"}
+          <span className="inline-block text-viridian transition-transform duration-200 group-hover:translate-x-1">
+            →
+          </span>
+        </p>
+      </div>
     </Wrapper>
   );
 }

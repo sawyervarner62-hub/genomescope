@@ -43,11 +43,21 @@ export function MagnitudeDistribution({ results }: MagnitudeDistributionProps) {
               label={({ name, value }) => `${name}: ${value}`}
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
+                <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
               ))}
             </Pie>
-            <Tooltip />
-            <Legend />
+            <Tooltip
+              contentStyle={{
+                background: "#18181b",
+                border: "1px solid #1f1f22",
+                borderRadius: 4,
+                color: "#e8dfc9",
+                fontSize: 12,
+              }}
+            />
+            <Legend
+              wrapperStyle={{ fontSize: 12, color: "#9ca3af" }}
+            />
           </PieChart>
         </ResponsiveContainer>
       </CardContent>

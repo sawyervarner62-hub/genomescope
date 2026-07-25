@@ -34,12 +34,18 @@ export function CategoryOverview({ results }: CategoryOverviewProps) {
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={data} layout="vertical" margin={{ left: 100 }}>
-            <XAxis type="number" allowDecimals={false} />
+            <XAxis
+              type="number"
+              allowDecimals={false}
+              tick={{ fontSize: 12, fill: "#9ca3af" }}
+              stroke="#3a3a3f"
+            />
             <YAxis
               type="category"
               dataKey="category"
               width={100}
-              tick={{ fontSize: 12 }}
+              tick={{ fontSize: 12, fill: "#9ca3af" }}
+              stroke="#3a3a3f"
             />
             <Tooltip
               content={({ active, payload }) => {

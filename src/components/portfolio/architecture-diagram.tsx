@@ -1,16 +1,15 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { FileUp, Cpu, Dna, BarChart3, Shield } from "lucide-react";
 
 const steps = [
   {
     icon: FileUp,
     label: "File Upload",
-    description: "Drag & drop your raw data",
+    description: "Drag and drop your raw data file",
   },
   {
     icon: Cpu,
     label: "Web Worker",
-    description: "Parses 600K+ lines in background",
+    description: "Parses 600K+ lines off the main thread",
   },
   {
     icon: Dna,
@@ -20,86 +19,49 @@ const steps = [
   {
     icon: BarChart3,
     label: "Dashboard",
-    description: "Charts, findings, and reports",
+    description: "Charts, findings, and exportable reports",
   },
 ];
 
 export function ArchitectureDiagram() {
   return (
-    <section className="pb-20 space-y-6">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-bold tracking-tight">How It Works</h2>
-        <p className="text-sm text-muted-foreground">
-          The Traitmap data pipeline
-        </p>
+    <section className="pb-16 space-y-8">
+      <div className="flex items-baseline gap-4">
+        <span className="spec-index">00</span>
+        <div>
+          <h2 className="text-display-sm">How It Works</h2>
+          <p className="mono-spec mt-1">The Traitmap data pipeline</p>
+        </div>
       </div>
 
-      {/* Desktop: horizontal */}
-      <div className="hidden sm:flex items-start justify-between gap-2">
+      <div className="grid gap-px bg-rule sm:grid-cols-4 border border-rule">
         {steps.map((step, i) => (
-          <div key={step.label} className="flex items-start flex-1">
-            <Card className="flex-1 border-border/50">
-              <CardContent className="pt-5 pb-4 text-center space-y-2">
-                <div
-                  className="mx-auto size-10 rounded-lg flex items-center justify-center"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(135deg, var(--gradient-start), var(--gradient-end))",
-                  }}
-                >
-                  <step.icon className="size-5 text-white" />
-                </div>
-                <p className="font-medium text-sm">{step.label}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {step.description}
-                </p>
-              </CardContent>
-            </Card>
-            {i < steps.length - 1 && (
-              <span className="text-muted-foreground/40 text-xl px-1 pt-8 shrink-0">
-                →
+          <div
+            key={step.label}
+            className="bg-ink-elevated p-5 flex flex-col gap-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="spec-index text-xl">
+                {String(i + 1).padStart(2, "0")}
               </span>
-            )}
+              <step.icon className="size-5 text-viridian" strokeWidth={1.5} />
+            </div>
+            <div>
+              <p className="font-display text-base font-semibold text-paper-text">
+                {step.label}
+              </p>
+              <p className="mt-1 text-xs text-steel-light leading-relaxed">
+                {step.description}
+              </p>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Mobile: vertical */}
-      <div className="sm:hidden space-y-2">
-        {steps.map((step, i) => (
-          <div key={step.label}>
-            <Card className="border-border/50">
-              <CardContent className="py-4 flex items-center gap-4">
-                <div
-                  className="size-10 rounded-lg flex items-center justify-center shrink-0"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(135deg, var(--gradient-start), var(--gradient-end))",
-                  }}
-                >
-                  <step.icon className="size-5 text-white" />
-                </div>
-                <div>
-                  <p className="font-medium text-sm">{step.label}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {step.description}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-            {i < steps.length - 1 && (
-              <div className="flex justify-center py-1">
-                <span className="text-muted-foreground/40 text-lg">↓</span>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-        <Shield className="size-3.5" />
-        Your data never leaves your browser — all processing happens locally.
-      </div>
+      <p className="mono-spec inline-flex items-center gap-2 text-steel-light">
+        <Shield className="size-3.5 text-viridian" />
+        Your data never leaves your browser. All processing happens locally.
+      </p>
     </section>
   );
 }

@@ -1,73 +1,56 @@
-import { Button } from "@/components/ui/button";
+import { DnaHelix } from "@/components/portfolio/dna-helix";
 
 export function PortfolioHero() {
   return (
-    <section className="py-32 sm:py-40 text-center max-w-2xl mx-auto relative">
-      {/* Subtle glow behind the name */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] rounded-full blur-[100px] opacity-20 pointer-events-none"
-        style={{ background: "oklch(0.5 0.25 275)" }}
-      />
-
-      <div className="relative space-y-6">
-        <p className="text-xs font-medium tracking-[0.3em] uppercase text-muted-foreground animate-fade-up">
-          Portfolio
-        </p>
-        <h1 className="text-6xl sm:text-8xl font-bold tracking-tighter leading-none animate-fade-up-delay-1">
-          <span
-            className="bg-clip-text text-transparent"
-            style={{
-              backgroundImage:
-                "linear-gradient(135deg, oklch(0.75 0.2 280), oklch(0.65 0.22 250), oklch(0.7 0.18 300))",
-              backgroundSize: "200% 200%",
-            }}
-          >
-            Sawyer
-          </span>
+    <section className="relative py-24 sm:py-32">
+      {/* Mono spine — editorial page metadata. */}
+      <div className="flex items-start justify-between gap-6">
+        <p className="eyebrow hero-fade-in">Portfolio</p>
+        <p className="mono-spec hidden sm:block text-right hero-fade-in hero-delay-1">
+          PG.01 / INDEX
           <br />
-          <span
-            className="bg-clip-text text-transparent"
-            style={{
-              backgroundImage:
-                "linear-gradient(135deg, oklch(0.65 0.22 250), oklch(0.7 0.18 300), oklch(0.75 0.2 280))",
-              backgroundSize: "200% 200%",
-            }}
-          >
-            Varner
-          </span>
-        </h1>
-        <p className="text-lg sm:text-xl text-foreground/70 font-light animate-fade-up-delay-2">
-          Student Developer &amp; Entrepreneur
+          EST. 2026
         </p>
-        <p className="text-muted-foreground max-w-md mx-auto leading-relaxed text-sm sm:text-base animate-fade-up-delay-3">
-          Building at the intersection of technology and business. I create tools
-          that solve real problems &mdash; from AI-powered automation to
-          privacy-first genome analysis.
-        </p>
-        <div className="flex items-center justify-center gap-3 pt-4 animate-fade-up-delay-4">
-          <a href="#projects">
-            <Button
-              size="lg"
-              className="text-sm px-8 rounded-full relative overflow-hidden group"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, oklch(0.55 0.25 285), oklch(0.6 0.2 240))",
-                color: "white",
-              }}
+      </div>
+
+      <div className="mt-8 grid lg:grid-cols-[1fr_auto] lg:items-center lg:gap-14">
+        <div>
+          <h1 className="text-display-hero overflow-hidden">
+            <span className="block hero-reveal hero-reveal-1">Sawyer</span>
+            <span className="block hero-reveal hero-reveal-2">Varner</span>
+          </h1>
+
+          <p className="mt-8 max-w-xl text-lg sm:text-xl text-ink-soft leading-relaxed hero-fade-in hero-delay-2">
+            Student developer building at the intersection of technology and
+            business. I make tools that solve real problems, from AI automation
+            to{" "}
+            <span className="font-display italic text-viridian">
+              privacy-first genome analysis.
+            </span>
+          </p>
+
+          <div className="mt-9 flex flex-wrap items-center gap-3 hero-fade-in hero-delay-3">
+            <a href="#projects" className="btn btn-accent">
+              View Projects
+            </a>
+            <a href="#contact" className="btn btn-paper">
+              Get in Touch
+            </a>
+          </div>
+
+          <p className="mt-10 mono-spec">
+            <span
+              className="hero-type text-steel"
+              style={{ "--type-w": "32ch" } as React.CSSProperties}
             >
-              <span className="relative z-10">View Projects</span>
-              <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-            </Button>
-          </a>
-          <a href="#contact">
-            <Button
-              variant="outline"
-              size="lg"
-              className="text-sm px-8 rounded-full border-border/60 hover:border-primary/50 transition-colors duration-300"
-            >
-              Contact Me
-            </Button>
-          </a>
+              IDX.00 / SVARNER / DEV + BUILDER
+            </span>
+          </p>
+        </div>
+
+        {/* Signature illustration — desktop only, decorative flourish. */}
+        <div className="hidden lg:flex items-center justify-center h-[420px] shrink-0 hero-fade-in hero-delay-2">
+          <DnaHelix />
         </div>
       </div>
     </section>

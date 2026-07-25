@@ -2,38 +2,78 @@
 
 import Link from "next/link";
 import { Github } from "lucide-react";
-
-const navLinkClass =
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-8 px-3 text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all duration-200";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // The genome analyzer renders on an ink (dark) surface. Match the nav to it
+  // so the header blends into the page instead of sitting as a cream strip.
+  const isInk = pathname?.startsWith("/projects/traitmap") ?? false;
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const navLinkClass = cn(
+    "link-accent text-sm transition-colors duration-200",
+    isInk
+      ? "text-steel-light hover:text-paper-text"
+      : "text-steel hover:text-ink"
+  );
+
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-background/60 backdrop-blur-xl backdrop-saturate-150">
-      <div className="container mx-auto max-w-5xl flex items-center justify-between px-4 h-14">
-        <Link
-          href="/"
-          className="text-lg font-semibold tracking-tight hover:opacity-80 transition-opacity"
-        >
-          Sawyer Varner
+    <header
+      className={cn(
+        "sticky top-0 z-40 transition-colors duration-300",
+        isInk ? "bg-ink" : "bg-paper",
+        scrolled
+          ? isInk
+            ? "border-b border-rule"
+            : "border-b border-rule-paper"
+          : "border-b border-transparent"
+      )}
+    >
+      <div className="container mx-auto max-w-5xl flex items-center justify-between px-4 h-16">
+        <Link href="/" className="flex items-baseline gap-2.5 group">
+          <span
+            className={cn(
+              "font-display text-lg font-semibold tracking-tight",
+              isInk ? "text-paper-text" : "text-ink"
+            )}
+          >
+            Sawyer Varner
+          </span>
+          <span className="mono-spec hidden sm:inline">/ IDX.00</span>
         </Link>
-        <nav className="flex items-center gap-0.5">
-          <a href="#projects" className={navLinkClass}>
+        <nav className="flex items-center gap-5 sm:gap-6">
+          <Link href="/#projects" className={navLinkClass}>
             Projects
-          </a>
-          <a href="#about" className={navLinkClass}>
+          </Link>
+          <Link href="/#about" className={navLinkClass}>
             About
-          </a>
+          </Link>
           <Link href="/blog" className={navLinkClass}>
             Blog
           </Link>
-          <a href="#contact" className={navLinkClass}>
+          <Link href="/#contact" className={navLinkClass}>
             Contact
-          </a>
+          </Link>
           <a
             href="https://github.com/sawyervarner62-hub"
             target="_blank"
             rel="noopener noreferrer"
-            className={navLinkClass}
+            aria-label="GitHub"
+            className={cn(
+              "transition-colors duration-200 hover:text-viridian",
+              isInk ? "text-steel-light" : "text-steel"
+            )}
           >
             <Github className="size-4" />
           </a>
